@@ -1,31 +1,7 @@
 {
-  "compilerOptions": {
-    "target": "ES2022",
-
-    "module": "ESNext",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["vite/client"],
-
-    /* see: https://v3.vitejs.dev/guide/features.html#usedefineforclassfields */
-    "useDefineForClassFields": true,
-
-    /* see: https://v3.vitejs.dev/guide/features.html#isolatedmodules */
-    "isolatedModules": true,
-    // "skipLibCheck": true,
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
-  },
-  "include": ["src"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

@@ -40,7 +40,7 @@ export class Lambertian implements Material {
     this.albedo = albedo;
   }
 
-  tryScatter(ray: Ray, hit: Hit): [boolean, Color3, Ray] {
+  tryScatter(_: Ray, hit: Hit): [boolean, Color3, Ray] {
     let scatterDirection = v3Add(v3RandomUnit(), hit.normal);
 
     if (v3IsNearZero(scatterDirection)) scatterDirection = hit.normal;
