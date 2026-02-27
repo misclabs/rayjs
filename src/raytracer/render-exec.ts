@@ -1,5 +1,5 @@
 import { RenderJob } from "./renderer";
-import { createTfDemoScene } from "./scenes";
+import { createTfDemoScene } from "../scenes";
 const appEl = document.getElementById("app")!;
 
 const statusEl = document.createElement("p");

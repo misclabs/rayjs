@@ -73,31 +73,31 @@ type RenderContext = {
 };
 
 export class RenderJob extends EventTarget {
-  renderTarget: ImageData;
-  tfWorld: TfWorld;
+  readonly renderTarget: ImageData;
+  readonly tfWorld: TfWorld;
 
-  #progress: number;
-  #totalSamples: number;
+  private _progress: number;
+  private _totalSamples: number;
 
   constructor(renderTarget: ImageData, tfWorld: TfWorld) {
     super();
     this.renderTarget = renderTarget;
     this.tfWorld = tfWorld;
 
-    this.#progress = 0.0;
-    this.#totalSamples = 0;
+    this._progress = 0.0;
+    this._totalSamples = 0;
   }
 
   get started(): boolean {
-    return this.#totalSamples !== 0;
+    return this._totalSamples !== 0;
   }
 
   get progress(): number {
-    return this.#totalSamples === 0 ? 0 : this.#progress / this.#totalSamples;
+    return this._totalSamples === 0 ? 0 : this._progress / this._totalSamples;
   }
 
   get completed(): boolean {
-    return this.#totalSamples !== 0 && this.#progress === this.#totalSamples;
+    return this._totalSamples !== 0 && this._progress === this._totalSamples;
   }
 
   /**
@@ -121,7 +121,7 @@ export class RenderJob extends EventTarget {
     camera.focusDist = 10;
 
     const renderContext = createRenderContext(this.renderTarget, camera);
-    this.#totalSamples =
+    this._totalSamples =
       renderContext.width *
       renderContext.height *
       renderContext.samplesPerPixel;
@@ -137,7 +137,7 @@ export class RenderJob extends EventTarget {
       while (!pixelData.done && lastTs + 1000.0 / 67 >= perf.now()) {
         const pos = pixelData.value.position;
         writeImageDataColor(this.renderTarget, pos, pixelData.value.color);
-        this.#progress += 1.0;
+        this._progress += 1.0;
         pixelData = pixelGen.next();
       }
 

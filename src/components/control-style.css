@@ -1,0 +1,20 @@
+button {
+  border-radius: var(--gap-2xs);
+  border: 1px solid transparent;
+  padding: var(--gap-3xs) var(--gap-xs);
+
+  font-size: var(--fs-0);
+  font-weight: 500;
+  font-family: inherit;
+
+  background-color: var(--surface-color);
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: var(--accent-color);
+}
+button:focus,
+button:focus-visible {
+  outline: 1px auto -webkit-focus-ring-color;
+}

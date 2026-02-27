@@ -1,8 +1,8 @@
-import type { Vec3 } from "./vec";
-import { v3Length, v3Sub } from "./vec";
-import { c3Mul, c3Random, c3RandomComponentRange } from "./color3";
-import { randomRange } from "./utils";
-import type { TfWorld } from "./transmission-format";
+import type { Vec3 } from "./raytracer/vec";
+import { v3Length, v3Sub } from "./raytracer/vec";
+import { c3Mul, c3Random, c3RandomComponentRange } from "./raytracer/color3";
+import { randomRange } from "./raytracer/utils";
+import type { TfWorld } from "./raytracer/transmission-format";
 
 export function createTfDemoScene(): TfWorld {
   const world: TfWorld = {

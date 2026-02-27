@@ -1,0 +1,55 @@
+:root {
+  font-family: var(--font-family);
+  line-height: var(--line-height);
+  font-weight: var(--font-weight);
+
+  color-scheme: light dark;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-size: var(--fs-0);
+
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: var(--font-weight-heading);
+  text-wrap: balance;
+}
+h1 {
+  font-size: var(--fs-3);
+  line-height: var(--line-height-lg-text);
+}
+h2 {
+  font-size: var(--fs-2);
+  line-height: var(--line-height-lg-text);
+}
+h3 {
+  font-size: var(--fs-1);
+  line-height: var(--line-height-lg-text);
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--accent-color);
+  text-decoration: inherit;
+}
+a:hover {
+  color: var(--accent-color-alt);
+}
