@@ -1,29 +1,31 @@
 import { type ReactElement, useState, useRef, useEffect } from "react";
-import Button from "./components/button";
-import NumberField from "./components/number-field";
+import {
+  jobStatusReady,
+  jobStatusFromProgress,
+  jobStatusComplete,
+  type RenderJobStatus,
+  type RenderJobParams,
+} from "./render-job-provider";
 import { RenderJob } from "./raytracer/renderer";
 import { createTfDemoScene } from "./scenes";
-import { type Vec2 } from "./raytracer/vec";
 import "./app.css";
+import SideBar from "./side-bar";
 
 const tfWorld = createTfDemoScene();
 
-const maxOutputWidth = 1920;
-const minOutputWidth = 8;
-const maxOutputHeight = 1080;
-const minOutputHeight = 8;
-
 export default function App(): ReactElement {
-  const [status, setStatus] = useState<"" | "rendering" | "complete">("");
-  const isRendering = status === "rendering";
-  const [progress, setProgress] = useState(0);
+  const [renderJobParams, setRenderJobParams] = useState<RenderJobParams>({
+    outputWidth: 480,
+    outputHeight: 360,
+  });
 
-  const [outputSize, setOutputSize] = useState<Vec2>([480, 360]);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [jobStatus, setJobStatus] = useState<RenderJobStatus>(jobStatusReady());
   // const [renderJob, setRenderJob] = useState<RenderJob | null>(null);
 
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
   useEffect(() => {
-    if (!isRendering) return;
+    if (!jobStatus.isRendering) return;
 
     const renderCanvas = canvasRef.current!;
 
@@ -42,61 +44,37 @@ export default function App(): ReactElement {
     requestAnimationFrame(function updateRender() {
       if (job.completed) {
         canvasContext.putImageData(job.renderTarget, 0, 0);
-        setStatus("complete");
+        setJobStatus(jobStatusComplete());
         return;
       }
       if (job.progress > lastProgressRendered) {
         canvasContext.putImageData(job.renderTarget, 0, 0);
-        setProgress(job.progress);
+        setJobStatus(jobStatusFromProgress(job.progress));
         lastProgressRendered = job.progress;
       }
 
       requestAnimationFrame(updateRender);
     });
-  }, [status, isRendering]);
+  }, [jobStatus.isRendering]);
 
   function onStartJob() {
-    setStatus("rendering");
+    setJobStatus(jobStatusFromProgress(0));
   }
-
-  const statusMessage = isRendering
-    ? `Progress: ${(progress * 100).toFixed(1)}%`
-    : status;
 
   return (
     <>
-      <div className="properties">
-        <label>
-          Output width:
-          <NumberField
-            value={outputSize[0]}
-            min={minOutputWidth}
-            max={maxOutputWidth}
-            disabled={isRendering}
-            onChange={(e) => {
-              setOutputSize([parseInt(e.target.value, 10), outputSize[1]]);
-            }}
-          />
-        </label>
-        <label>
-          Output heigth:
-          <NumberField
-            value={outputSize[1]}
-            min={minOutputHeight}
-            max={maxOutputHeight}
-            disabled={isRendering}
-            onChange={(e) => {
-              setOutputSize([outputSize[0], parseInt(e.target.value, 10)]);
-            }}
-          />
-        </label>
-        <Button onClick={onStartJob} disabled={isRendering}>
-          Start
-        </Button>
-        <p>{statusMessage}</p>
-      </div>
+      <SideBar
+        jobParams={renderJobParams}
+        setJobParams={setRenderJobParams}
+        jobStatus={jobStatus}
+        onStartJob={onStartJob}
+      />
       <div className="output">
-        <canvas ref={canvasRef} width={outputSize[0]} height={outputSize[1]} />
+        <canvas
+          ref={canvasRef}
+          width={renderJobParams.outputWidth}
+          height={renderJobParams.outputHeight}
+        />
       </div>
     </>
   );

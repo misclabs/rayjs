@@ -1,2 +1,4 @@
 @import "./style-config.css";
+@import "./style-color.css";
 @import "./style-base.css";
+@import "./style-ui.css";

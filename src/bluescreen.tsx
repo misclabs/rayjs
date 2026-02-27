@@ -6,12 +6,12 @@ export default function Bluescreen({
   resetErrorBoundary,
 }: FallbackProps): ReactElement {
   return (
-    <>
+    <div>
       <h1>A problem has been detected.</h1>
       <pre>Error: {getErrorMessage(error)}</pre>
       <button type="button" onClick={resetErrorBoundary}>
         Restart
       </button>
-    </>
+    </div>
   );
 }

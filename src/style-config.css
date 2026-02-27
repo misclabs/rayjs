@@ -1,26 +1,4 @@
 :root {
-  --bg-color: #242424;
-
-  --surface-color: #1a1a1a;
-
-  --text-color: rgba(255, 255, 255, 0.87);
-
-  --accent-color: #646cff;
-  --accent-color-alt: #535bf2;
-
-  @media (prefers-color-scheme: light) {
-    --text-color: #213547;
-    --bg-color: #ffffff;
-    --accent-color-alt: #747bff;
-    --surface-color: #f9f9f9;
-  }
-
-  --line-height: 1.5;
-  --line-height-lg-text: 1.2;
-  --font-family: system-ui, sans-serif;
-  --font-weight: 400;
-  --font-weigth-heading: 700;
-
   /* @link https://utopia.fyi/type/calculator?c=360,18,1.2,1240,20,1.25,5,2,&s=0.75|0.5|0.25,1.5|2|3|4|6,s-l&g=s,l,xl,12 */
 
   /* Step -2: 12.5px → 12.8px */
@@ -82,4 +60,20 @@
   /* Custom pairs */
   /* Space s-l: 18px → 40px */
   --gap-s-l: clamp(1.125rem, 0.5625rem + 2.5vw, 2.5rem);
+
+  --line-height: 1.5;
+  --line-height-lg-text: 1.2;
+  --font-family: system-ui, sans-serif;
+  --font-weight: 400;
+  --font-weigth-heading: 700;
+
+  --ui-font-size: var(--fs-0);
+  --ui-font-weight: 500;
+
+  --control-height: calc(var(--ui-font-size) + var(--gap-2xs) * 2);
+
+  --active-filter: brightness(0.92) saturate(1.1);
+
+  --cursor-interactive: default;
+  --cursor-disabled: not-allowed;
 }
