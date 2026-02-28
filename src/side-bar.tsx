@@ -1,7 +1,10 @@
 import type { ChangeEvent, ReactElement } from "react";
 import Button from "./components/button";
 import NumberField from "./components/number-field";
-import type { RenderJobParams, RenderJobStatus } from "./render-job-provider";
+import {
+  type RenderParams,
+  useRenderStatus,
+} from "./components/render-context";
 import "./side-bar.css";
 
 const maxOutputWidth = 1920;
@@ -10,30 +13,30 @@ const maxOutputHeight = 1080;
 const minOutputHeight = 8;
 
 interface SideBarProps {
-  jobParams: RenderJobParams;
-  setJobParams: (value: RenderJobParams) => void;
-  jobStatus: RenderJobStatus;
+  renderParams: RenderParams;
+  setRenderParams: (value: RenderParams) => void;
   onStartJob: () => void;
 }
 export default function SideBar({
-  jobParams,
-  setJobParams,
-  jobStatus,
+  renderParams,
+  setRenderParams,
   onStartJob,
 }: SideBarProps): ReactElement {
-  const statusMessage = jobStatus.isRendering
-    ? `Progress: ${(jobStatus.progress * 100).toFixed(1)}%`
-    : jobStatus.state;
+  const renderStatus = useRenderStatus();
+
+  let statusMessage = "";
+  if (renderStatus.started)
+    statusMessage = `Progress: ${(renderStatus.progress * 100).toFixed(1)}%`;
 
   function onOutputWidthChange(e: ChangeEvent<HTMLInputElement>) {
-    setJobParams({
-      ...jobParams,
+    setRenderParams({
+      ...renderParams,
       outputWidth: parseInt(e.target.value, 10),
     });
   }
   function onOutputHeightChange(e: ChangeEvent<HTMLInputElement>) {
-    setJobParams({
-      ...jobParams,
+    setRenderParams({
+      ...renderParams,
       outputHeight: parseInt(e.target.value, 10),
     });
   }
@@ -45,10 +48,10 @@ export default function SideBar({
         </label>
         <NumberField
           id="output-width"
-          value={jobParams.outputWidth}
+          value={renderParams.outputWidth}
           min={minOutputWidth}
           max={maxOutputWidth}
-          disabled={jobStatus.isRendering}
+          disabled={renderStatus.started}
           onChange={onOutputWidthChange}
         />
       </div>
@@ -58,15 +61,15 @@ export default function SideBar({
         </label>
         <NumberField
           id="output-height"
-          value={jobParams.outputHeight}
+          value={renderParams.outputHeight}
           min={minOutputHeight}
           max={maxOutputHeight}
-          disabled={jobStatus.isRendering}
+          disabled={renderStatus.started}
           onChange={onOutputHeightChange}
         />
       </div>
       <div>
-        <Button onClick={onStartJob} disabled={jobStatus.isRendering}>
+        <Button onClick={onStartJob} disabled={renderStatus.started}>
           Start
         </Button>
       </div>

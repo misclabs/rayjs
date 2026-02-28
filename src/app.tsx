@@ -1,77 +1,38 @@
-import { type ReactElement, useState, useRef, useEffect } from "react";
+import { type ReactElement, useState } from "react";
 import {
-  jobStatusReady,
-  jobStatusFromProgress,
-  jobStatusComplete,
-  type RenderJobStatus,
-  type RenderJobParams,
-} from "./render-job-provider";
-import { RenderJob } from "./raytracer/renderer";
-import { createTfDemoScene } from "./scenes";
+  type RenderParams,
+  useRenderDispatch,
+  useRenderTarget,
+} from "./components/render-context";
 import "./app.css";
 import SideBar from "./side-bar";
 
-const tfWorld = createTfDemoScene();
-
 export default function App(): ReactElement {
-  const [renderJobParams, setRenderJobParams] = useState<RenderJobParams>({
+  const [renderJobParams, setRenderJobParams] = useState<RenderParams>({
     outputWidth: 480,
     outputHeight: 360,
   });
 
-  const [jobStatus, setJobStatus] = useState<RenderJobStatus>(jobStatusReady());
-  // const [renderJob, setRenderJob] = useState<RenderJob | null>(null);
-
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  useEffect(() => {
-    if (!jobStatus.isRendering) return;
-
-    const renderCanvas = canvasRef.current!;
-
-    // TODO(JW): does canvasContext need to be cleaned up?
-    const canvasContext = renderCanvas.getContext("2d")!;
-    // TODO(JW): does renderData need to be cleaned up?
-    const renderData = canvasContext.createImageData(
-      renderCanvas.width,
-      renderCanvas.height,
-    );
-
-    // TODO(JW): cleanup render job
-    const job = new RenderJob(renderData, tfWorld);
-    job.execute();
-    let lastProgressRendered = 0;
-    requestAnimationFrame(function updateRender() {
-      if (job.completed) {
-        canvasContext.putImageData(job.renderTarget, 0, 0);
-        setJobStatus(jobStatusComplete());
-        return;
-      }
-      if (job.progress > lastProgressRendered) {
-        canvasContext.putImageData(job.renderTarget, 0, 0);
-        setJobStatus(jobStatusFromProgress(job.progress));
-        lastProgressRendered = job.progress;
-      }
-
-      requestAnimationFrame(updateRender);
-    });
-  }, [jobStatus.isRendering]);
+  const renderDispatch = useRenderDispatch();
+  const renderTarget = useRenderTarget();
 
   function onStartJob() {
-    setJobStatus(jobStatusFromProgress(0));
+    renderDispatch({
+      type: "start",
+      params: renderJobParams,
+    });
   }
 
   return (
     <>
       <SideBar
-        jobParams={renderJobParams}
-        setJobParams={setRenderJobParams}
-        jobStatus={jobStatus}
+        renderParams={renderJobParams}
+        setRenderParams={setRenderJobParams}
         onStartJob={onStartJob}
       />
       <div className="output">
         <canvas
-          ref={canvasRef}
+          ref={renderTarget.canvasRef}
           width={renderJobParams.outputWidth}
           height={renderJobParams.outputHeight}
         />
