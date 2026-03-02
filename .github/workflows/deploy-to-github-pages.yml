@@ -1,0 +1,44 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+env:
+  BUILD_PATH: "."
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get Node.js version
+        id: get-node-version
+        run: |
+          if [ -f "${{ env.BUILD_PATH }}/.node-version" ]; then
+            echo version=`cat "${{ env.BUILD_PATH }}/.node-version"` >> $GITHUB_OUTPUT
+          else
+            echo Missing file: "${{ env.BUILD_PATH }}/.node-version"
+            exit 1
+          fi
+      - name: Setup Node.js ${{ steps.get-node-version.outputs.version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.get-node-version.outputs.version }}
+          cache: "npm"
+          cache-dependency-path: ${{ env.BUILD_PATH }}/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ${{ env.BUILD_PATH }}
+      - name: Build
+        run: npm run build --if-present
+        working-directory: ${{ env.BUILD_PATH }}
+    # - name: Test
+    #   run: npm test
+    #   working-directory: ${{ env.BUILD_PATH }}
