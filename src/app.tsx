@@ -32,7 +32,7 @@ export default function App(): ReactElement {
       />
       <div className="output">
         <canvas
-          ref={renderTarget.canvasRef}
+          ref={renderTarget.canvasRef /* eslint-disable-line */}
           width={renderJobParams.outputWidth}
           height={renderJobParams.outputHeight}
         />
