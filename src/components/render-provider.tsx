@@ -9,7 +9,7 @@ import {
   RenderStatusContext,
   RenderDispatchContext,
   RenderTargetContext,
-  type RenderAction
+  type RenderAction,
 } from "./render-context";
 import { RenderJob } from "../raytracer/renderer";
 import { createTfDemoScene } from "../raytracer/scenes";
