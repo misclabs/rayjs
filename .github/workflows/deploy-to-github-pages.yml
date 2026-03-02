@@ -24,7 +24,6 @@ env:
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -55,7 +54,7 @@ jobs:
         run: npm run build --if-present
         working-directory: ${{ env.BUILD_PATH }}
       # - name: Test
-      #   run: npm test
+      #   run: npm run test
       #   working-directory: ${{ env.BUILD_PATH }}
       - name: Upload to GitHub Pages
         uses: actions/upload-pages-artifact@v3
@@ -63,7 +62,6 @@ jobs:
           path: ${{ env.BUILD_PATH }}/dist
 
   deploy:
-    name: Deploy
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
