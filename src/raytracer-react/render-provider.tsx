@@ -4,12 +4,14 @@ import {
   useRef,
   type ReactElement,
   type ReactNode,
+  useCallback,
 } from "react";
 import {
   RenderStatusContext,
   RenderDispatchContext,
   RenderTargetContext,
   type RenderAction,
+  type RenderStatus,
 } from "./render-context";
 import { RenderJob } from "../raytracer/renderer";
 import { createTfDemoScene } from "../raytracer/scenes";
@@ -30,7 +32,30 @@ export function RenderProvider({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const requestIdRef = useRef<number | null>(null);
   const [jobData, setJobData] = useState<ProviderJobData | null>(null);
-  const [renderProgress, setRenderProgress] = useState(0);
+
+  // TODO(jw): can useSyncExternalStore be used here instread of hacky forceUpdate?
+  const forceUpdate = useCallback(
+    () => setJobData((jd) => (jd ? { ...jd } : jd)),
+    [],
+  );
+
+  const renderStatus: RenderStatus = (() => {
+    if (jobData === null) {
+      return { state: "ready", progress: 0 };
+    }
+
+    if (jobData.job.completed) {
+      return {
+        state: "completed",
+        progress: 1,
+      };
+    }
+
+    return {
+      state: jobData.job.paused ? "paused" : "rendering",
+      progress: jobData.job.progress,
+    };
+  })();
 
   useEffect(() => {
     if (jobData === null || requestIdRef.current !== null) return;
@@ -42,13 +67,13 @@ export function RenderProvider({
 
       if (job.completed) {
         canvasContext.putImageData(job.renderTarget, 0, 0);
-        setRenderProgress(1);
+        forceUpdate();
         return;
       }
       if (job.progress !== lastUpdatedProgress) {
         canvasContext.putImageData(job.renderTarget, 0, 0);
         lastUpdatedProgress = job.progress;
-        setRenderProgress(lastUpdatedProgress);
+        forceUpdate();
       }
 
       requestIdRef.current = requestAnimationFrame(updateRender);
@@ -60,35 +85,45 @@ export function RenderProvider({
         requestIdRef.current = null;
       }
     };
-  }, [jobData]);
+  }, [jobData, forceUpdate]);
 
   function renderDispatch(action: RenderAction): void {
-    console.log(action);
-    switch (action.type) {
-      case "start": {
-        if (!canvasRef.current) throw new Error("Missing canvas element");
-        const canvas = canvasRef.current;
-        const canvasContext = canvas.getContext("2d")!;
-        const imageData = canvasContext.createImageData(
-          canvas.width,
-          canvas.height,
-        );
+    if (action.type === "start") {
+      if (!canvasRef.current) throw new Error("Missing canvas element");
+      const canvas = canvasRef.current;
+      const canvasContext = canvas.getContext("2d")!;
+      const imageData = canvasContext.createImageData(
+        canvas.width,
+        canvas.height,
+      );
 
-        const job = new RenderJob(imageData, tfWorld);
-        job.execute();
-        setJobData({
-          job,
-          canvasContext,
-        });
-        setRenderProgress(0);
+      const job = new RenderJob(imageData, tfWorld);
+      job.execute();
+      setJobData({
+        job,
+        canvasContext,
+      });
+    } else if (action.type === "reset") {
+      if (jobData) {
+        // TODO(jw): clear canvas
+        jobData.job.cancel();
+        setJobData(null);
+      }
+    } else if (action.type === "pause") {
+      if (jobData) {
+        jobData.job.pause();
+        forceUpdate();
+      }
+    } else if (action.type === "resume") {
+      if (jobData) {
+        jobData.job.resume();
+        forceUpdate();
       }
     }
   }
 
   return (
-    <RenderStatusContext
-      value={{ started: jobData !== null, progress: renderProgress }}
-    >
+    <RenderStatusContext value={renderStatus}>
       <RenderDispatchContext value={renderDispatch}>
         <RenderTargetContext value={{ canvasRef }}>
           {children}

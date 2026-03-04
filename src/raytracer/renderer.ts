@@ -76,20 +76,23 @@ export class RenderJob extends EventTarget {
   readonly renderTarget: ImageData;
   readonly tfWorld: TfWorld;
 
-  private _progress: number;
-  private _totalSamples: number;
+  private _progress = 0.0;
+  private _totalSamples = 0;
+  private _pause = false;
+  private _cancel = false;
 
   constructor(renderTarget: ImageData, tfWorld: TfWorld) {
     super();
     this.renderTarget = renderTarget;
     this.tfWorld = tfWorld;
-
-    this._progress = 0.0;
-    this._totalSamples = 0;
   }
 
   get started(): boolean {
     return this._totalSamples !== 0;
+  }
+
+  get paused(): boolean {
+    return !this.completed && this._pause;
   }
 
   get progress(): number {
@@ -133,7 +136,15 @@ export class RenderJob extends EventTarget {
 
     while (!pixelData.done) {
       await new Promise((resolve) => setTimeout(resolve));
+      if (this._cancel) {
+        this.dispatchEvent(new Event("render-cancelled"));
+        return;
+      }
 
+      if (this._pause) continue;
+
+      // Note: ideally this would happen off the main thread. For now just
+      // make sure we don't block to long.
       while (!pixelData.done && lastTs + 1000.0 / 67 >= perf.now()) {
         const pos = pixelData.value.position;
         writeImageDataColor(this.renderTarget, pos, pixelData.value.color);
@@ -145,6 +156,18 @@ export class RenderJob extends EventTarget {
     }
 
     this.dispatchEvent(new Event("render-complete"));
+  }
+
+  pause(): void {
+    this._pause = true;
+  }
+
+  resume(): void {
+    this._pause = false;
+  }
+
+  cancel(): void {
+    this._cancel = true;
   }
 }
 

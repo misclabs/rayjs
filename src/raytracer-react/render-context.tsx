@@ -8,7 +8,7 @@ export interface RenderParams {
 export type RenderCanvasRef = RefObject<HTMLCanvasElement | null>;
 
 export interface RenderStatus {
-  started: boolean;
+  state: "ready" | "rendering" | "paused" | "completed";
   progress: number;
 }
 
@@ -16,21 +16,28 @@ export interface RenderTarget {
   canvasRef: RenderCanvasRef;
 }
 
-export const isRendering = (status: RenderStatus) =>
-  status.started && status.progress !== 1;
-
 interface StartRenderAction {
   type: "start";
   params: RenderParams;
 }
-interface CancelRenderAction {
-  type: "cancel";
+interface PauseRenderAction {
+  type: "pause";
 }
-export type RenderAction = StartRenderAction | CancelRenderAction;
+interface ResumeRenderAction {
+  type: "resume";
+}
+interface ResetRenderAction {
+  type: "reset";
+}
+export type RenderAction =
+  | StartRenderAction
+  | PauseRenderAction
+  | ResumeRenderAction
+  | ResetRenderAction;
 type RenderDispatch = (action: RenderAction) => void;
 
 export const RenderStatusContext = createContext<RenderStatus>({
-  started: false,
+  state: "ready",
   progress: 0,
 });
 export const RenderTargetContext = createContext<RenderTarget>({

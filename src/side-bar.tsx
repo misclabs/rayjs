@@ -1,10 +1,10 @@
 import type { ChangeEvent, ReactElement } from "react";
-import Button from "./components/button";
 import NumberField from "./components/number-field";
 import {
   type RenderParams,
   useRenderStatus,
-} from "./components/render-context";
+} from "./raytracer-react/render-context";
+import { RenderJobCommandBar } from "./components/render-job-command-bar";
 import "./side-bar.css";
 
 const maxOutputWidth = 1920;
@@ -15,17 +15,17 @@ const minOutputHeight = 8;
 interface SideBarProps {
   renderParams: RenderParams;
   setRenderParams: (value: RenderParams) => void;
-  onStartJob: () => void;
 }
 export default function SideBar({
   renderParams,
   setRenderParams,
-  onStartJob,
 }: SideBarProps): ReactElement {
   const renderStatus = useRenderStatus();
 
+  console.log(`renderStatus=${JSON.stringify(renderStatus)}`);
+
   let statusMessage = "";
-  if (renderStatus.started)
+  if (renderStatus.state !== "ready")
     statusMessage = `Progress: ${(renderStatus.progress * 100).toFixed(1)}%`;
 
   function onOutputWidthChange(e: ChangeEvent<HTMLInputElement>) {
@@ -40,6 +40,8 @@ export default function SideBar({
       outputHeight: parseInt(e.target.value, 10),
     });
   }
+
+  const canStartJob = renderStatus.state === "ready";
   return (
     <div className="side-bar">
       <div className="stacked-label">
@@ -51,7 +53,7 @@ export default function SideBar({
           value={renderParams.outputWidth}
           min={minOutputWidth}
           max={maxOutputWidth}
-          disabled={renderStatus.started}
+          disabled={!canStartJob}
           onChange={onOutputWidthChange}
         />
       </div>
@@ -64,15 +66,14 @@ export default function SideBar({
           value={renderParams.outputHeight}
           min={minOutputHeight}
           max={maxOutputHeight}
-          disabled={renderStatus.started}
+          disabled={!canStartJob}
           onChange={onOutputHeightChange}
         />
       </div>
-      <div>
-        <Button onClick={onStartJob} disabled={renderStatus.started}>
-          Start
-        </Button>
-      </div>
+      <RenderJobCommandBar
+        renderParams={renderParams}
+        renderStatus={renderStatus}
+      />
       <p>{statusMessage}</p>
     </div>
   );
