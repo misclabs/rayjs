@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 256 256" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <ellipse cx="128" cy="128" rx="126.219" ry="126.65" style="fill:rgb(20,20,20);stroke:rgb(20,20,20);stroke-width:1px;"/>
+    <g id="Atom">
+        <g id="Electron">
+            <ellipse cx="128" cy="128" rx="46.221" ry="117.328" style="fill:none;stroke:rgb(233,110,253);stroke-width:11.33px;"/>
+        </g>
+        <g id="Electron1" serif:id="Electron">
+            <path d="M26.391,186.664C13.636,164.572 48.81,120.349 104.89,87.972C160.969,55.594 216.854,47.244 229.609,69.336C242.364,91.428 207.19,135.651 151.11,168.028C95.031,200.406 39.146,208.756 26.391,186.664Z" style="fill:none;stroke:rgb(233,110,253);stroke-width:11.33px;"/>
+        </g>
+        <g id="Electron2" serif:id="Electron">
+            <path d="M229.609,186.664C216.854,208.756 160.969,200.406 104.89,168.028C48.81,135.651 13.636,91.428 26.391,69.336C39.146,47.244 95.031,55.594 151.11,87.972C207.19,120.349 242.364,164.572 229.609,186.664Z" style="fill:none;stroke:rgb(233,110,253);stroke-width:11.33px;"/>
+        </g>
+    </g>
+    <path d="M128,49.502L143.96,68.438L167.249,60.018L171.602,84.398L195.982,88.751L187.562,112.04L206.498,128L187.562,143.96L195.982,167.249L171.602,171.602L167.249,195.982L143.96,187.562L128,206.498L112.04,187.562L88.751,195.982L84.398,171.602L60.018,167.249L68.438,143.96L49.502,128L68.438,112.04L60.018,88.751L84.398,84.398L88.751,60.018L112.04,68.438L128,49.502Z" style="fill:rgb(20,20,20);stroke:rgb(233,110,253);stroke-width:10.67px;"/>
+    <path d="M128,107.945C136.81,92.358 154.431,92.358 163.242,100.152C172.052,107.945 172.052,123.533 163.242,139.12C157.074,150.811 141.216,162.502 128,170.296C114.784,162.502 98.926,150.811 92.758,139.12C83.948,123.533 83.948,107.945 92.758,100.152C101.569,92.358 119.19,92.358 128,107.945Z" style="fill:rgb(103,168,254);"/>
+</svg>
