@@ -14,12 +14,8 @@ export class RenderSetupCard extends HTMLDivElement {
     });
   }
 
-  shadowRoot: ShadowRoot;
-
   constructor() {
     super();
-
-    this.shadowRoot = this.attachShadow({ mode: "open" });
 
     const template = loadTemplate(`${RenderSetupCard.elementName}-template`)!;
     const fragment = document.importNode(template.content, true);
@@ -51,6 +47,6 @@ export class RenderSetupCard extends HTMLDivElement {
       outputHeightInput.value = settings.height.toString();
     });
 
-    this.shadowRoot.appendChild(fragment);
+    this.appendChild(fragment);
   }
 }
