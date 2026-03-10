@@ -1,0 +1,103 @@
+/* Layout */
+main {
+  flex-grow: 1;
+  display: flex;
+  padding: var(--gap-xs);
+  gap: var(--gap-xs);
+}
+
+.output {
+  flex-grow: 1;
+  background-color: var(--surface-color);
+  border-radius: var(--gap-xs);
+  padding: var(--gap-s);
+
+  display: grid;
+  place-items: center;
+}
+
+[is="side-bar"] {
+  border-radius: var(--gap-xs);
+  padding: var(--gap-s);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-s);
+  width: 20rem;
+}
+
+/* HTML Controls */
+
+.label {
+  font-size: var(--fs--1);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  user-select: none;
+  vertical-align: top;
+  font-family: inherit;
+  text-align: center;
+
+  font-size: var(--ui-font-size);
+  font-weight: var(--ui-font-weight);
+
+  border-radius: var(--gap-3xs);
+  gap: var(--gap-xs);
+
+  padding: 0 var(--gap-xs);
+  height: var(--control-height);
+  border-width: 0;
+  cursor: var(--cursor-interactive);
+}
+.button:disabled {
+  cursor: var(--cursor-disabled);
+}
+.button.solid {
+  background-color: var(--accent-9);
+  color: var(--accent-contrast);
+}
+.button.solid:hover {
+  background-color: var(--accent-10);
+}
+.button.solid:active {
+  background-color: var(--accent-10);
+  filter: var(--active-filter);
+}
+
+/* Controls */
+.progress-bar {
+  flex: 1 1 auto;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  height: var(--gap-s);
+  border-radius: 9999px;
+  background-color: var(--neutral-track);
+  color: var(--accent-contrast);
+  font-size: var(--fs--1);
+}
+.progress-bar .indicator {
+  width: var(--progress-percent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--accent-track);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 1;
+  transition: all var(--wa-transition-slow, 200ms)
+    var(--wa-transition-easing, ease);
+  user-select: none;
+}
+/* .progress-bar .label {
+} */
+
+/* Utilities */
+.stack {
+  display: flex;
+  flex-direction: column;
+}

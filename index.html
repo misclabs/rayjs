@@ -4,11 +4,49 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>RayJS</title>
-    <!--<link rel="stylesheet" href="/src/style.css" />-->
-    <link rel="icon" href="misclabs-icon.svg" type="image/svg+xml" />
-    <script type="module" src="/src/main.tsx"></script>
+    <link rel="stylesheet" href="./src/main.css" />
+    <link rel="icon" href="./src/misclabs-icon.svg" type="image/svg+xml" />
+    <script type="module" src="/src/main.ts"></script>
   </head>
   <body>
-    <div id="app-root"></div>
+    <header><h1>RayJS</h1></header>
+    <main>
+      <div is="side-bar"></div>
+      <div class="output">
+        <canvas id="render-canvas" />
+      </div>
+    </main>
+
+    <template id="side-bar-template">
+      <div is="render-setup-card"></div>
+      <div is="render-progress-card" style="display: none"></div>
+    </template>
+
+    <template id="render-setup-card-template">
+      <link rel="stylesheet" href="./src/main.css" />
+
+      <div class="stack">
+        <label class="label" for="output-width">Render width</label>
+        <input type="number" id="output-width" min="8" max="4096" />
+      </div>
+      <div class="stack">
+        <label class="label" for="output-height">Render height</label>
+        <input type="number" id="output-height" min="8" max="4096" />
+      </div>
+      <div>
+        <button id="start-button">Start</button>
+      </div>
+    </template>
+
+    <template id="render-progress-card-template">
+      <div class="progress-bar" style="--progress-percent: 50%">
+        <div class="indicator">
+          <span class="label">50%</span>
+        </div>
+      </div>
+      <div>
+        <button class="cancel-button">Cancel</button>
+      </div>
+    </template>
   </body>
 </html>

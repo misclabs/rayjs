@@ -72,7 +72,7 @@ type RenderContext = {
   defocusDiskV: Vec3;
 };
 
-export class RenderJob extends EventTarget {
+export class RenderJob {
   readonly renderTarget: ImageData;
   readonly tfWorld: TfWorld;
 
@@ -82,7 +82,6 @@ export class RenderJob extends EventTarget {
   private _cancel = false;
 
   constructor(renderTarget: ImageData, tfWorld: TfWorld) {
-    super();
     this.renderTarget = renderTarget;
     this.tfWorld = tfWorld;
   }
@@ -99,6 +98,10 @@ export class RenderJob extends EventTarget {
     return this._totalSamples === 0 ? 0 : this._progress / this._totalSamples;
   }
 
+  get cancelled(): boolean {
+    return this._cancel;
+  }
+
   get completed(): boolean {
     return this._totalSamples !== 0 && this._progress === this._totalSamples;
   }
@@ -112,8 +115,8 @@ export class RenderJob extends EventTarget {
     const world = createWorldFromTf(this.tfWorld);
 
     const camera = new Camera();
-    camera.samplesPerPixel = 100;
-    camera.maxDepth = 50;
+    camera.samplesPerPixel = 25;
+    camera.maxDepth = 10;
 
     camera.vertFov = 20; // 90
     camera.lookFrom = [13, 2, 3];
@@ -137,13 +140,12 @@ export class RenderJob extends EventTarget {
     while (!pixelData.done) {
       await new Promise((resolve) => setTimeout(resolve));
       if (this._cancel) {
-        this.dispatchEvent(new Event("render-cancelled"));
         return;
       }
 
       if (this._pause) continue;
 
-      // Note: ideally this would happen off the main thread. For now just
+      // Note(jw): ideally this would happen off the main thread. For now just
       // make sure we don't block to long.
       while (!pixelData.done && lastTs + 1000.0 / 67 >= perf.now()) {
         const pos = pixelData.value.position;
@@ -154,8 +156,6 @@ export class RenderJob extends EventTarget {
 
       lastTs = perf.now();
     }
-
-    this.dispatchEvent(new Event("render-complete"));
   }
 
   pause(): void {

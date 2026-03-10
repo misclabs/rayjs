@@ -1,7 +1,0 @@
-.stacked-label {
-  display: flex;
-  flex-direction: column;
-}
-.label {
-  font-size: var(--fs--1);
-}
