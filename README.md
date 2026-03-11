@@ -7,6 +7,7 @@ RayJS is a ray tracer written in Javascript following [Ray Tracing in One Weeken
 ## Style
 
 The primary styles are in [`main.css`](./src/main.css). Cascade layers used and their purpose are (listed lowest to highest priority):
+
 - [`theme`](./src/styles/style-theme.css) - Configuration and design tokens (sizes, typography, colors, etc.)
 - [`base`](./src/styles/style-base.css) - Reset and base elements setup
 - [`components`](./src/styles/style-components.css) - Reusable style components, layout, and utilities
