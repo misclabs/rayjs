@@ -1,3 +1,9 @@
+/*
+  components cascade layer
+
+  Used for reusable style components, layout, and utilities
+*/
+
 @layer components {
   .stack {
     display: flex;

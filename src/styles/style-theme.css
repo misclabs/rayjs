@@ -1,3 +1,9 @@
+/* 
+  theme cascade layer
+
+  Used for configuration and design tokens (sizes, typography, colors, etc.)
+*/
+
 @layer theme {
   :root {
     /*

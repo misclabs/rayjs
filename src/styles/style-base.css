@@ -1,3 +1,9 @@
+/*
+  base cascade layer
+
+  Used for style reset and base elements setup
+*/
+
 @layer base {
   *,
   *::before,

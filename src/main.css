@@ -4,6 +4,11 @@
 @import "./styles/style-base.css";
 @import "./styles/style-components.css";
 
+/* 
+  Below are one off styles. If this section grows much it should be split off
+  into sperate files.
+*/
+
 main {
   flex-grow: 1;
   display: flex;
