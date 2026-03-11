@@ -1,71 +1,72 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-:root {
-  color-scheme: light dark;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  :root {
+    color-scheme: light dark;
+    background-color: var(--background-color);
+    color: var(--text-color);
 
-  font-family: var(--font-family);
-  line-height: var(--line-height);
-  font-weight: var(--font-weight);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+    font-family: var(--font-family);
+    line-height: var(--line-height);
+    font-weight: var(--font-weight);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-body {
-  font-size: var(--fs-0);
+  body {
+    font-size: var(--step-0);
 
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  min-width: 320px;
-  min-height: 100vh;
-}
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-width: 320px;
+    min-height: 100vh;
+  }
 
-h1,
-h2,
-h3 {
-  font-weight: var(--font-weight-heading);
-  text-wrap: balance;
-}
-h1 {
-  font-size: var(--fs-3);
-  line-height: var(--line-height-lg-text);
-}
-h2 {
-  font-size: var(--fs-2);
-  line-height: var(--line-height-lg-text);
-}
-h3 {
-  font-size: var(--fs-1);
-  line-height: var(--line-height-lg-text);
-}
+  h1,
+  h2,
+  h3 {
+    font-weight: var(--font-weight-heading);
+    text-wrap: balance;
+  }
+  h1 {
+    font-size: var(--step-3);
+    line-height: var(--line-height-lg-text);
+  }
+  h2 {
+    font-size: var(--step-2);
+    line-height: var(--line-height-lg-text);
+  }
+  h3 {
+    font-size: var(--step-1);
+    line-height: var(--line-height-lg-text);
+  }
 
-p,
-li {
-  text-wrap: pretty;
-}
+  p,
+  li {
+    text-wrap: pretty;
+  }
 
-a {
-  color: var(--accent-a11);
-  text-decoration: none;
-  cursor: var(--cursor-interactive);
-}
-a:hover {
-  /* TODO(jw) decoration */
-  text-decoration: underline;
-}
+  a {
+    color: var(--accent-a11);
+    text-decoration: none;
+    cursor: var(--cursor-interactive);
+  }
+  a:hover {
+    text-decoration: underline;
+  }
 
-button,
-input,
-select,
-textarea {
-  font-family: inherit;
-  font-size: 100%;
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+    font-size: 100%;
+  }
 }

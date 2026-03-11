@@ -1,4 +1,31 @@
-@import "./styles/style-config.css";
-@import "./styles/style-color.css";
+@layer theme, base, components;
+
+@import "./styles/style-theme.css";
 @import "./styles/style-base.css";
-@import "./styles/style-ui.css";
+@import "./styles/style-components.css";
+
+main {
+  flex-grow: 1;
+  display: flex;
+  padding: var(--space-xs);
+  gap: var(--space-xs);
+}
+
+.output {
+  flex-grow: 1;
+  background-color: var(--surface-color);
+  border-radius: var(--space-xs);
+  padding: var(--space-s);
+
+  display: grid;
+  place-items: center;
+}
+
+[is="side-bar"] {
+  border-radius: var(--space-xs);
+  padding: var(--space-s);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  width: 20rem;
+}
