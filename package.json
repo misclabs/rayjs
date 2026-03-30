@@ -18,7 +18,7 @@
     "preview": "vite preview",
     "check": "tsc --noEmit",
     "fmt": "prettier --write .",
-    "fmt:check": "prettier --check .",
+    "fmt:check": "prettier --check --log-level=warn .",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "code-check": "pnpm check && pnpm lint && pnpm fmt:check"
