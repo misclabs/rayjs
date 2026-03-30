@@ -33,17 +33,17 @@ jobs:
         id: get-node-version
         run: |
           if [ -f "${{ env.BUILD_PATH }}/.node-version" ]; then
-            echo version=`cat "${{ env.BUILD_PATH }}/.node-version"` >> $GITHUB_OUTPUT
+            echo NODE_VERSION=`cat "${{ env.BUILD_PATH }}/.node-version"` >> $GITHUB_ENV
           else
             echo Missing file: "${{ env.BUILD_PATH }}/.node-version"
             exit 1
           fi
 
-      - name: Setup Node.js ${{ steps.get-node-version.outputs.version }}
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
         # setup-node v6.2.0
         uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238
         with:
-          node-version: ${{ steps.get-node-version.outputs.version }}
+          node-version: ${{ env.NODE_VERSION }}
           cache: "npm"
           cache-dependency-path: ${{ env.BUILD_PATH }}/package-lock.json
 
