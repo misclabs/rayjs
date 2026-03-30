@@ -57,7 +57,7 @@ jobs:
         working-directory: ${{ env.BUILD_PATH }}
 
       - name: Pre-build checks
-        run: npm run check
+        run: npm run code-check
 
       - name: Build
         run: npm run build --if-present
